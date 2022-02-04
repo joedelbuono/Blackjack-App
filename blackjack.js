@@ -4,30 +4,46 @@ let firstCard = 0
 let secondCard = 0
 let cards = []
 let sum = 0
+let hasBlackJack = false
+let isAlive = false
 
-/* let hasBlackJack = false
-
-let isAlive = true */
+let player = {
+    Name: "Player 1",
+    Chips: 145
+}
 
 // linking our html elements to JS variables
 let messageEl = document.querySelector("#message-el")
 let cardsEl = document.querySelector("#cards-el")
 let sumEl = document.querySelector("#sum-el")
+let playerEl = document.querySelector("#player-el")
+
+// adding the players name and their chips
+playerEl.textContent = player.Name + ": $" + player.Chips
 
 // disabling the new card and reset buttons on load
 if (sum === 0) {
     document.querySelector("#new-card-el").disabled = true
-} else if (sum === 0) {
     document.querySelector("#reset-el").disabled = true
 }
 
 // function to generate a random card
-function getRandomCard(min, max) {
-    return Math.floor(Math.random() * (12-2) + 2)
+function getRandomCard() {
+    let randomCard = Math.floor(Math.random() * 13 + 1)
+    if (randomCard > 10) {
+        return 10
+    } else if (randomCard === 1) {
+        return 11
+    } else {
+        return randomCard
+    }
+
 }
 
 // function to start the game
 function startGame() {
+    // denote current status of player
+    isAlive = true
     // generate random two cards, add them to the cards array,  
     // add them to the sum
     firstCard = getRandomCard()
@@ -86,14 +102,21 @@ function renderGame() {
 
 // function to draw a new card during the game
 function newCard () {
-    // generate a random new card
-    let newCard = getRandomCard()
-    // add the new card to the cards array
-    cards.push(newCard)
-    // add the new points to the points tally
-    sum += newCard
-    // determine the new state the player is currently in
-    renderGame()
+    // only allow a new card if they are alive
+    // and do not have blackjack
+    if (isAlive === true && hasBlackJack === false) {
+        // generate a random new card
+        let newCard = getRandomCard()
+        // add the new card to the cards array
+        cards.push(newCard)
+        // add the new points to the points tally
+        sum += newCard
+        // determine the new state the player is currently in
+        renderGame()
+    } else {
+        document.querySelector("#new-card-el").disabled = true
+    }
+    
 }
 
 // function to reset the game
