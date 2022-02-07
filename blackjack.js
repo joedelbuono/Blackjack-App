@@ -1,31 +1,34 @@
 
 // defining initial JS variables for the game
-let firstCard = 0
-let secondCard = 0
-let cards = []
-let sum = 0
-let hasBlackJack = false
-let isAlive = false
+let firstCard = 0;
+let secondCard = 0;
+let cards = [];
+let sum = 0;
+let hasBlackJack = false;
+let isAlive = false;
 
 let player = {
     Name: "Player 1",
     Chips: 145
-}
+};
 
 // linking our html elements to JS variables
-let messageEl = document.querySelector("#message-el")
-let cardsEl = document.querySelector("#cards-el")
-let sumEl = document.querySelector("#sum-el")
-let playerEl = document.querySelector("#player-el")
+let messageEl = document.querySelector("#message-el");
+let cardsEl = document.querySelector("#cards-el");
+let sumEl = document.querySelector("#sum-el");
+let startGame = document.querySelector("#start-el");
+let newCard = document.querySelector("#new-card-el");
+let resetGame = document.querySelector("#reset-el");
+let playerEl = document.querySelector("#player-el");
 
 // adding the players name and their chips
-playerEl.textContent = player.Name + ": $" + player.Chips
+playerEl.textContent = player.Name + ": $" + player.Chips;
 
 // disabling the new card and reset buttons on load
 if (sum === 0) {
     document.querySelector("#new-card-el").disabled = true
     document.querySelector("#reset-el").disabled = true
-}
+};
 
 // function to generate a random card
 function getRandomCard() {
@@ -37,11 +40,10 @@ function getRandomCard() {
     } else {
         return randomCard
     }
-
-}
+};
 
 // function to start the game
-function startGame() {
+startGame.addEventListener("click", function() {
     // denote current status of player
     isAlive = true
     // generate random two cards, add them to the cards array,  
@@ -51,13 +53,13 @@ function startGame() {
     cards = [firstCard, secondCard]
     sum = firstCard + secondCard
     // input default state to the cards list
-    cardsEl.textContent = "Cards:" + " "
+    cardsEl.textContent = "Cards: "
     // add our randomly generated first two cards to the cards list
     for (let i = 0; i < cards.length; i ++) {
         cardsEl.textContent += cards[i] + " "
     }
     // add our total points after initial draw to the point tally
-    sumEl.textContent = "Sum:" + " " + sum + " " + "points"
+    sumEl.textContent = `Sum: ${sum} points`
     // determine current state in the game after the initial draw
     if (sum <= 20) {
         message = "Do you want to draw another card?"
@@ -77,7 +79,7 @@ function startGame() {
         document.querySelector("#new-card-el").disabled = false
         document.querySelector("#reset-el").disabled = false
     }
-}
+});
 
 // function to render the game, after the initial draw 
 // should be similar to the start game function without initial
@@ -98,10 +100,10 @@ function renderGame() {
         isAlive = false
     }
     messageEl.textContent = message
-}
+};
 
 // function to draw a new card during the game
-function newCard () {
+newCard.addEventListener("click", function() {
     // only allow a new card if they are alive
     // and do not have blackjack
     if (isAlive === true && hasBlackJack === false) {
@@ -117,10 +119,10 @@ function newCard () {
         document.querySelector("#new-card-el").disabled = true
     }
     
-}
+});
 
 // function to reset the game
-function resetGame() {
+resetGame.addEventListener("click", function() {
     // resetting all the initial values to 0
     let firstCard = 0
     let secondCard = 0
@@ -140,4 +142,4 @@ function resetGame() {
         document.querySelector("#reset-el").disabled = true
     }
 
-}
+ });
