@@ -1,3 +1,2 @@
 # Blackjack-App
-
-Repo for my Blackjack app
+Single player local Blackjack application
