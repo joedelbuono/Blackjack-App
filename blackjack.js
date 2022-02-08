@@ -6,19 +6,7 @@ let cards = [];
 let sum = 0;
 let hasBlackJack = false;
 let isAlive = false;
-let deck = [[ 2, '♠' ],  [ 3, '♠' ],  [ 4, '♠' ],  [ 5, '♠' ],
-[ 6, '♠' ],  [ 7, '♠' ],  [ 8, '♠' ],  [ 9, '♠' ],
-[ 10, '♠' ], [ 11, '♠' ], [ 12, '♠' ], [ 13, '♠' ],
-[ 14, '♠' ], [ 2, '♥' ],  [ 3, '♥' ],  [ 4, '♥' ],
-[ 5, '♥' ],  [ 6, '♥' ],  [ 7, '♥' ], [ 8, '♥' ],
-[ 9, '♥' ],  [ 10, '♥' ], [ 11, '♥' ], [ 12, '♥' ],
-[ 13, '♥' ], [ 14, '♥' ], [ 2, '♣️' ],  [ 3, '♣️' ],
-[ 4, '♣️' ],  [ 5, '♣️' ],  [ 6, '♣️' ],  [ 7, '♣️' ],
-[ 8, '♣️' ],  [ 9, '♣️' ],  [ 10, '♣️' ], [ 11, '♣️' ],
-[ 12, '♣️' ], [ 13, '♣️' ], [ 14, '♣️' ], [ 2, '♦' ],
-[ 3, '♦' ],  [ 4, '♦' ],  [ 5, '♦' ],  [ 6, '♦' ],
-[ 7, '♦' ],  [ 8, '♦' ],  [ 9, '♦' ],  [ 10, '♦' ],
-[ 11, '♦' ], [ 12, '♦' ], [ 13, '♦' ], [ 14, '♦' ]];
+let deck = [];
 let player = {
     Name: "Player 1",
     Chips: 0
@@ -93,6 +81,20 @@ function renderGame() {
 
 // function to start the game
 startGame.addEventListener("click", function() {
+    // render our deck
+    deck = [[ 2, '♠' ],  [ 3, '♠' ],  [ 4, '♠' ],  [ 5, '♠' ],
+    [ 6, '♠' ],  [ 7, '♠' ],  [ 8, '♠' ],  [ 9, '♠' ],
+    [ 10, '♠' ], [ 11, '♠' ], [ 12, '♠' ], [ 13, '♠' ],
+    [ 14, '♠' ], [ 2, '♥' ],  [ 3, '♥' ],  [ 4, '♥' ],
+    [ 5, '♥' ],  [ 6, '♥' ],  [ 7, '♥' ], [ 8, '♥' ],
+    [ 9, '♥' ],  [ 10, '♥' ], [ 11, '♥' ], [ 12, '♥' ],
+    [ 13, '♥' ], [ 14, '♥' ], [ 2, '♣️' ],  [ 3, '♣️' ],
+    [ 4, '♣️' ],  [ 5, '♣️' ],  [ 6, '♣️' ],  [ 7, '♣️' ],
+    [ 8, '♣️' ],  [ 9, '♣️' ],  [ 10, '♣️' ], [ 11, '♣️' ],
+    [ 12, '♣️' ], [ 13, '♣️' ], [ 14, '♣️' ], [ 2, '♦' ],
+    [ 3, '♦' ],  [ 4, '♦' ],  [ 5, '♦' ],  [ 6, '♦' ],
+    [ 7, '♦' ],  [ 8, '♦' ],  [ 9, '♦' ],  [ 10, '♦' ],
+    [ 11, '♦' ], [ 12, '♦' ], [ 13, '♦' ], [ 14, '♦' ]];
     // denote current status of player
     isAlive = true
     // generate random two cards, add them to the cards array,  
@@ -122,9 +124,14 @@ newCard.addEventListener("click", function() {
         // generate a random new card
         let newCard = getRandomCard()
         // add the new card to the cards array
-        cards.push(newCard)
+        cards.push(newCard[0] + newCard[1])
         // add the new points to the points tally
         sum += determinePoints(newCard)
+        // adjust the points if we pulled an ace and it brought us over 21
+        // at 11
+        if (determinePoints(newCard) === 11 && sum > 21) {
+            sum -= 10
+        }
         // determine the new state the player is currently in
         renderGame()
     } else {
@@ -140,19 +147,7 @@ resetGame.addEventListener("click", function() {
     let secondCard = 0
     let cards = []
     let sum = 0
-    let deck = [[ 2, '♠' ],  [ 3, '♠' ],  [ 4, '♠' ],  [ 5, '♠' ],
-    [ 6, '♠' ],  [ 7, '♠' ],  [ 8, '♠' ],  [ 9, '♠' ],
-    [ 10, '♠' ], [ 11, '♠' ], [ 12, '♠' ], [ 13, '♠' ],
-    [ 14, '♠' ], [ 2, '♥' ],  [ 3, '♥' ],  [ 4, '♥' ],
-    [ 5, '♥' ],  [ 6, '♥' ],  [ 7, '♥' ], [ 8, '♥' ],
-    [ 9, '♥' ],  [ 10, '♥' ], [ 11, '♥' ], [ 12, '♥' ],
-    [ 13, '♥' ], [ 14, '♥' ], [ 2, '♣️' ],  [ 3, '♣️' ],
-    [ 4, '♣️' ],  [ 5, '♣️' ],  [ 6, '♣️' ],  [ 7, '♣️' ],
-    [ 8, '♣️' ],  [ 9, '♣️' ],  [ 10, '♣️' ], [ 11, '♣️' ],
-    [ 12, '♣️' ], [ 13, '♣️' ], [ 14, '♣️' ], [ 2, '♦' ],
-    [ 3, '♦' ],  [ 4, '♦' ],  [ 5, '♦' ],  [ 6, '♦' ],
-    [ 7, '♦' ],  [ 8, '♦' ],  [ 9, '♦' ],  [ 10, '♦' ],
-    [ 11, '♦' ], [ 12, '♦' ], [ 13, '♦' ], [ 14, '♦' ]];
+    let deck = [];
     /* let hasBlackJack = false
     let isAlive = true */
     // resetting all the display text to default
