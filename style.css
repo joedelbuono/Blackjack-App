@@ -17,7 +17,19 @@ h4 {
 
 button {
   color: black;
-  background-color: goldenrod;
+  background-color: lightgray;
+  border-style: none;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 30px;
+  margin: 2px;
+  width: 180px;
+}
+
+button:disabled {
+  color: black;
+  background-color: gray;
   border-style: none;
   border-radius: 2px;
   font-size: 18px;
@@ -32,15 +44,16 @@ button {
   justify-content: center;
 }
 
-#new-card-el {
+#start-el {
   color: black;
-  background-color: lightgray;
+  background-color: goldenrod;
 }
 
-#reset-el {
+#start-el:disabled {
   color: black;
-  background-color: lightgray;
+  background-color: #856b23;
 }
+
 
 #message-el {
   font-style: italic;
