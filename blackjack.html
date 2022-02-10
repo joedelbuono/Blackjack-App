@@ -7,6 +7,13 @@
   <body>
     <h1>Blackjack</h1>
     <p id="message-el">Ready to start?</p>
+    <section id="bet-el">
+      <label id="bet-label" for="bet">Place a Bet:</label>
+      <input type="number" id="bet" name="bet" min="0" max="1000" />
+      <button id="submit-bet">SUBMIT BET</button>
+    </section>
+    <p id="winnings"></p>
+    <p id="player-el"></p>
     <p id="dealer-el">Dealer:</p>
     <p id="cards-el">Player:</p>
     <p id="sum-el">Player Points:</p>
@@ -16,13 +23,6 @@
       <button id="stay-el">STAY</button>
       <button id="reset-el">RESET</button>
     </section>
-    <section id="bet-el">
-      <label id="bet-label" for="bet">Place a Bet:</label>
-      <input type="number" id="bet" name="bet" min="0" max="1000" />
-      <button id="submit-bet">SUBMIT BET</button>
-    </section>
-    <p id="player-el"></p>
-    <p id="winnings"></p>
     <p id="deck-el"></p>
     <h4>
       Note: Ace equals 11 points, unless it brings you over 21, then it's 1.
