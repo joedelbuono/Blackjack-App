@@ -69,8 +69,14 @@ function determinePoints(card) {
 // function to render the game, pre stay
 function renderGame() {
     cardsEl.textContent = `Player: ${cards}`
-    dealerEl.textContent = `Dealer: ${dealerCards}`
+    dealerEl.textContent = `Dealer: Hidden,${dealerCards[1]}`
     sumEl.textContent = `Player Points: ${sum}`
+    if (sum) {
+        document.querySelector("#start-el").disabled = true
+        document.querySelector("#new-card-el").disabled = false
+        document.querySelector("#stay-el").disabled = false
+        document.querySelector("#reset-el").disabled = false
+    }
     if (sum <= 20) {
         message = "Do you want to draw another card?"
     } else if (sum === 21 && sum === dealerSum) {
@@ -78,9 +84,9 @@ function renderGame() {
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
     } else if(sum === 21){
-        message = "Woohoo! You got blackjack! Hit RESET to play again."
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
+        message = "Woohoo! You got blackjack! Hit RESET to play again."
     } else if (sum > 21) {
         message = "You're out of the game. Hit RESET to play again."
         document.querySelector("#new-card-el").disabled = true
@@ -115,13 +121,6 @@ startGame.addEventListener("click", function() {
     cards = [firstCard[0] + firstCard[1], secondCard[0]+ secondCard[1]]
     sum = determinePoints(firstCard) + determinePoints(secondCard)
     renderGame()
-    messageEl.textContent = message
-    if (sum) {
-        document.querySelector("#start-el").disabled = true
-        document.querySelector("#new-card-el").disabled = false
-        document.querySelector("#stay-el").disabled = false
-        document.querySelector("#reset-el").disabled = false
-    }
 });
 
 // function to draw a new card during the game
