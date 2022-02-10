@@ -1,4 +1,19 @@
 
+// linking our html elements to JS variables
+let messageEl = document.querySelector("#message-el");
+let dealerEl = document.querySelector("#dealer-el");
+let cardsEl = document.querySelector("#cards-el");
+let sumEl = document.querySelector("#sum-el")
+let startGame = document.querySelector("#start-el");
+let newCard = document.querySelector("#new-card-el");
+let stayEl = document.querySelector("#stay-el");
+let resetGame = document.querySelector("#reset-el");
+let bet = document.querySelector("#bet");
+let submitBet = document.querySelector("#submit-bet");
+let playerEl = document.querySelector("#player-el");
+let winningsEl = document.querySelector("#winnings");
+let deckEl = document.querySelector("#deck-el");
+
 // defining initial JS variables for the game
 let dealerFirstCard = [];
 let dealerSecondCard = [];
@@ -13,27 +28,20 @@ let player = {
     Name: "Player",
     Chips: 0
 };
-
-// linking our html elements to JS variables
-let messageEl = document.querySelector("#message-el");
-let dealerEl = document.querySelector("#dealer-el");
-let cardsEl = document.querySelector("#cards-el");
-let sumEl = document.querySelector("#sum-el")
-let startGame = document.querySelector("#start-el");
-let newCard = document.querySelector("#new-card-el");
-let stayEl = document.querySelector("#stay-el");
-let resetGame = document.querySelector("#reset-el");
-let playerEl = document.querySelector("#player-el");
-let deckEl = document.querySelector("#deck-el");
+let winnings = 0;
 
 // adding the players name and their chips
-playerEl.textContent = player.Name + ": $" + player.Chips;
+playerEl.textContent = player.Name + " Staked: $" + player.Chips;
 
-//displaying the deck to see how it functions
+// displaying the players winnings in an instance
+winningsEl.textContent = `Winnings: $${0}`
+
+//displaying the deck
 deckEl.textContent = "Remaining Cards: " + deck.length;
 
-// disabling the new card and reset buttons on load
+// disabling everything except submit bet on load
 if (sum === 0) {
+    document.querySelector("#start-el").disabled = true
     document.querySelector("#new-card-el").disabled = true
     document.querySelector("#reset-el").disabled = true
     document.querySelector("#stay-el").disabled = true
@@ -81,18 +89,22 @@ function renderGame() {
         message = "Do you want to draw another card?"
     } else if (sum === 21 && sum === dealerSum) {
         message = "Nice job, but you have to split the pot with the house. Hit RESET to play again."
+        winnings += (player.Chips*0.5)
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
     } else if(sum === 21){
+        winnings += player.Chips
+        message = "Woohoo! You got blackjack! Hit RESET to play again."
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
-        message = "Woohoo! You got blackjack! Hit RESET to play again."
     } else if (sum > 21) {
         message = "You're out of the game. Hit RESET to play again."
+        winnings += 0
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
     }
     messageEl.textContent = message
+    winningsEl.textContent = "Winnings: $" + winnings
     deckEl.textContent = "Remaining Cards: " + deck.length
 
 };
@@ -156,14 +168,19 @@ stayEl.addEventListener("click", function() {
     sumEl.textContent = `Player Points: ${sum}`
     if (dealerSum > 21) {
         message = "Woohoo! You beat the Dealer! Hit RESET to play again."
+        winnings += player.Chips
     } else if(dealerSum > sum){
         message = "Sorry, the Dealer beat you. Hit RESET to play again."
+        winnings += 0
     } else if (dealerSum === sum) {
         message = "Nice job, but you have to split the pot with the house. Hit RESET to play again."
+        winnings += (player.Chips*0.5)
     } else {
         message = "Woohoo! You beat the Dealer! Hit RESET to play again."
+        winnings += player.Chips
     }
     messageEl.textContent = message
+    winningsEl.textContent = "Winnings: $" + winnings
     deckEl.textContent = "Remaining Cards: " + deck.length
     document.querySelector("#new-card-el").disabled = true
     document.querySelector("#stay-el").disabled = true 
@@ -180,16 +197,34 @@ resetGame.addEventListener("click", function() {
     cards = []
     sum = 0
     deck = [];
+    player.Chips = 0
     messageEl.textContent = "Want to play a game?"
     dealerEl.textContent = "Dealer:"
     cardsEl.textContent = "Player:"
     sumEl.textContent = "Player Points:"
-    playerEl.textContent = player.Name + ": $" + player.Chips;
+    playerEl.textContent = player.Name + " Staked: $" + player.Chips;
     deckEl.textContent = "Remaining Cards: " + deck.length
     if (sum === 0) {
-        document.querySelector("#start-el").disabled = false
+        document.querySelector("#start-el").disabled = true
         document.querySelector("#new-card-el").disabled = true
         document.querySelector("#stay-el").disabled = true
         document.querySelector("#reset-el").disabled = true
+        document.querySelector("#bet").disabled = false
+        document.querySelector("#submit-bet").disabled = false
     }
  });
+
+ // function to submit the bet and disable start button
+submitBet.addEventListener("click", function() {
+    if (bet.value) {
+        player.Chips = parseInt(bet.value)
+        playerEl.textContent = player.Name + " Staked: $" + player.Chips;
+        document.querySelector("#start-el").disabled = false
+        document.querySelector("#bet").disabled = true
+        document.querySelector("#submit-bet").disabled = true
+        bet.value = ""
+    } else {
+        bet.value = "Please place a bet."
+    }
+    
+})
